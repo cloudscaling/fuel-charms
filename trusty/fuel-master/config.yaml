@@ -1,0 +1,37 @@
+options:
+    deploy:
+        type: string
+        default: ""
+        description: "Trigger to start new deployment. To be replaced with action later. Change value to trigger."
+    storage-pools:
+        type: string
+        default: "default"
+        description: "Storage pools"
+    device-paths:
+        type: string
+        default: "/dev/sdb"
+        description: "Device paths"
+    protection-domain:
+        type: string
+        default: "default"
+        description: "Protection domain"
+    password:
+        type: string
+        default: "Default_password"
+        description: "Password"
+    sds-on-controller:
+        type: string
+        default: "true"
+        description: "Is SDS on controller"
+    facters:
+        type: string
+        default: "/home/alevine/shared/fuel_plugin_scaleio/deployment_scripts/puppet/modules/scaleio_fuel/lib/facter:/etc/puppet/modules/scaleio_openstack/lib/facter"
+        description: "Facters to set up before calling puppets"
+    modules-path:
+        type: string
+        default: "/etc/puppet/modules"
+        description: "Path to puppet modules"
+    manifests-path:
+        type: string
+        default: "/home/alevine/shared/fuel_plugin_scaleio/deployment_scripts/puppet/manifests"
+        description: "Puppet manifests path"

@@ -1,0 +1,5 @@
+options:
+    roles:
+        type: string
+        default: "controller"
+        description: "Space separated list of fuel roles"

@@ -1,0 +1,28 @@
+#!/bin/bash
+
+apt-get install -y puppet
+puppet module install puppetlabs-firewall
+puppet module install puppetlabs-stdlib
+puppet module install puppetlabs-inifile
+puppet module install puppetlabs-haproxy
+puppet module install --version "<0.4.0" cloudscaling-scaleio_openstack
+puppet module install --version "<0.4.0" cloudscaling-scaleio
+
+# TODO: remove when packages will be in official repo
+apt_repo=`config-get scaleio-apt-repo`
+if [ -n "$apt_repo" ] ; then
+  if wget -q --output-document=/root/repo.key $apt_repo/repo.key ; then
+    apt-key add /root/repo.key
+  fi
+
+  cat 2>/dev/null <<EOF > /etc/apt/sources.list.d/repo.list
+deb $apt_repo/ubuntu trusty main
+deb-src $apt_repo/ubuntu trusty main
+EOF
+
+  apt-get -qq update
+fi
+
+my_dir="$(dirname "$0")"
+cp /etc/hiera.yaml /etc/puppet
+cp -r "$my_dir/../files/modules" /etc/puppet

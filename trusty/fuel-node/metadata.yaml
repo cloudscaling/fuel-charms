@@ -1,0 +1,10 @@
+name: fuel-node
+summary: Fuel node emulation charm
+maintainer: Alexandre Levine <alexandrelevine@gmail.com>
+description: Fuel node emulation charm
+requires:
+  fuel-master:
+    interface: fuel-master
+peers:
+  scaleio-cluster:
+    interface: scaleio-cluster

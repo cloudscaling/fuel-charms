@@ -1,0 +1,49 @@
+server {
+    listen   8000;
+
+    server_name localhost;
+
+    access_log /var/log/nginx/access_nailgun.log;
+    error_log /var/log/nginx/error_nailgun.log debug;
+
+    charset utf-8;
+    client_max_body_size 10M;
+
+    location = /favicon.ico {
+        log_not_found off;
+        access_log off;
+    }
+
+    gzip on;
+    gzip_min_length 1000;
+    gzip_types text/plain application/json;
+
+    location /static {
+        autoindex on;
+        alias <%= @staticdir %>;
+    }
+
+    location /dump {
+        alias <%= @logdumpdir %>;
+    }
+
+    location ~ ^/ostf/(.*) {
+        proxy_pass http://<%= @ostf_host %>:8777/v1/$1;
+        proxy_buffering off;
+    }
+
+    location ~ ^/keystone/(.*) {
+        proxy_pass http://<%= @keystone_host %>:5000/$1;
+        proxy_buffering off;
+    }
+
+    location / {
+        root <%= @staticdir %>;
+    }
+
+    location /api {
+        include uwsgi_params;
+        uwsgi_pass <%= @nailgun_host %>:8001; 
+        client_max_body_size 100m;
+    }
+}

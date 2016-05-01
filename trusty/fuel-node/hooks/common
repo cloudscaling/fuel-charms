@@ -1,0 +1,44 @@
+#!/bin/bash
+set -eu
+
+node_yaml=`relation-get node_yaml`
+facters=`relation-get facters`
+modules_path=`relation-get modules_path`
+manifests_path=`relation-get manifests_path`
+
+function exec_puppet {
+	juju-log "Running puppet '$1'"
+	set +e
+    juju-log "FACTERLIB=$facters puppet apply --modulepath=${modules_path} ${manifests_path}/$1"
+    FACTERLIB=$facters puppet apply --modulepath="${modules_path}" "${manifests_path}/$1" --detailed-exitcodes
+	local exit_code=$?
+	if [[ $exit_code == 0 || $exit_code == 2 ]]; then
+		juju-log "The run succeeded. Exit code is $exit_code."
+	else
+		juju-log "The run failed. Exit code is $exit_code."
+		exit 1
+	fi
+	set -e
+}
+
+function setup {
+    juju-log "Setting up $JUJU_UNIT_NAME"
+}
+
+declare -A puppet_stage_map=()
+
+function parse_tasks {
+    roles=("`config-get roles`")
+    yaml="$manifests_path/../../../tasks.yaml"
+    puppets=(`grep puppet_manifest $yaml | cut -d "/" -f 3`)
+    for puppet in ${puppets[*]}; do
+        puppet_roles="`grep -B 4 $puppet $yaml | grep role`"
+        for role in ${roles[*]}; do
+            if [[ $puppet_roles == *"$role"* ]]; then
+                puppet_stage_map[$puppet]="`grep -B 3 /$puppet $yaml | grep stage | cut -d "/" -f 2`"
+                break
+            fi
+        done
+    done
+    juju-log "Stage puppets: `declare -p puppet_stage_map`"
+}

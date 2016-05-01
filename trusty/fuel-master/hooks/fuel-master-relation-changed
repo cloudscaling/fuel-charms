@@ -1,0 +1,39 @@
+#!/bin/bash
+my_dir="$(dirname "$0")"
+. "$my_dir/common"
+
+juju-log "Fuel-master relation triggered on master with remote: ${JUJU_REMOTE_UNIT}"
+
+timestamp=`relation-get timestamp $JUJU_UNIT_NAME`
+
+if [ -z "$timestamp" ]; then exit; fi
+
+rids=`relation-ids fuel-master`
+if [ -n "$rids" ]; then
+	juju-log "Fuel-node ${JUJU_REMOTE_UNIT} is ready for the next stage"
+	for rid in $rids; do		
+		units=`relation-list -r $rid`
+		for unit in $units; do
+			unit_timestamp=`relation-get -r $rid timestamp $unit`
+			if [ -z "${unit_timestamp}" ] || (( unit_timestamp <= timestamp )); then
+			    juju-log "Not ready to move to the next stage because of ${unit}"
+				exit
+			fi
+		done	
+	done
+
+    parse_tasks
+	timestamp=$(( timestamp + 1 ))
+	if (( timestamp < stage_count )); then
+		for rid in $rids; do
+			relation-set -r $rid timestamp=$timestamp
+			relation-set -r $rid stage="${stages[$timestamp]}"
+		done
+		juju-log "Moving to stage ${timestamp} - ${stages[$timestamp]}"
+	else
+		for rid in $rids; do
+			relation-set -r $rid timestamp=
+		done	
+		juju-log "Deployment finished"
+	fi
+fi

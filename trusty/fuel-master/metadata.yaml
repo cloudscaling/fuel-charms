@@ -1,0 +1,7 @@
+name: fuel-master
+summary: Fuel master node emulation charm
+maintainer: Alexandre Levine <alexandrelevine@gmail.com>
+description: Fuel master node emulation charm
+provides:
+    fuel-master:
+        interface: fuel-master

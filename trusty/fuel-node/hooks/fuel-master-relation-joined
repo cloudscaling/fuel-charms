@@ -1,0 +1,12 @@
+#!/bin/bash
+my_dir="$(dirname "$0")"
+. "$my_dir/common"
+
+juju-log "Fuel-master relation joined on ${JUJU_REMOTE_UNIT}"
+
+hostname=`hostname`
+roles=`config-get roles`
+relation-set roles=$roles
+relation-set hostname=$hostname
+
+juju-log "Hostname: $hostname, Roles: $roles"

@@ -1,0 +1,103 @@
+#!/bin/bash
+set -eu
+
+declare stages=()
+stage_count=0
+facters=`config-get facters`
+modules_path=`config-get modules-path`
+manifests_path=`config-get manifests-path`
+
+function parse_tasks {
+    stage_array=(`grep stage $manifests_path/../../../tasks.yaml | cut -d "/" -f 2`)
+    declare -A stage_hash=()
+    for stage in ${stage_array[*]}; do
+        stage_hash[$stage]=''
+    done
+    stages=(`printf "%s\n" ${!stage_hash[*]} | sort -n`)
+    stage_count=${#stages[*]}
+    juju-log "Stages: ${stages[*]}"
+}
+
+node_yaml=''
+rids=(`relation-ids fuel-master`)
+
+declare -A node_roles=()
+declare -A node_ips=()
+declare -A node_names=()
+management_vip='127.0.0.1'
+
+function convert-name {
+  echo ${1//[-\/]/_}
+}
+
+function retrieve-nodes-info {
+    for rid in $rids; do        
+        units=`relation-list -r $rid`
+        for unit in $units; do
+            local roles=`relation-get -r $rid roles $unit`
+            local ip=`relation-get -r $rid private-address $unit`
+            local hostname=`relation-get -r $rid hostname $unit`
+            if [ -z "${roles}" ]; then exit; fi
+            if [[ $roles == *"controller"* ]]; then
+                management_vip=$ip
+            fi
+            node_roles[$unit]="$roles"
+            node_ips[$unit]="$ip"
+            node_names[$unit]="$hostname"
+        done    
+    done
+}   
+
+function prepare_node_yaml {
+    if [[ -z ${rids[*]+x} ]]; then exit 0; fi
+
+    retrieve-nodes-info
+    
+    juju-log "`declare -p node_roles`"
+    juju-log "`declare -p node_ips`"
+    
+    storage_pools=`config-get storage-pools`
+    device_paths=`config-get device-paths`
+    protection_domain=`config-get protection-domain`
+    password=`config-get password`
+    sds_on_controller=`config-get sds-on-controller`
+    
+    echo "---"
+    echo "management_vip: $management_vip"
+    echo "public_vip: $management_vip"
+    echo "fuel_version: '6.1'"
+    echo "nodes:"
+    for node in ${!node_roles[*]}; do
+        juju-log "NODE: $node, ${node_roles[$node]}"
+        roles=(${node_roles[$node]})
+        juju-log "ROLES: $roles, ${node_roles[$node]}"
+        name=${node_names[$node]}
+        
+        for role in "${roles[*]}"; do
+            echo "- uid: '${node}'"
+            echo "  role: ${role}"
+            echo "  internal_address: ${node_ips[$node]}"
+            echo "  storage_address: ${node_ips[$node]}"
+            echo "  name: ${name}"
+        done
+    done
+    echo "scaleio:"
+    echo "  storage_pools: $storage_pools"
+    echo "  device_paths: $device_paths"
+    echo "  protection_domain: $protection_domain"
+    echo "  gateway_user: admin"
+    echo "  gateway_port: '4443'"
+    echo "  version: '2.0'"
+    echo "  gateway_ip: ''"
+    echo "  gateway_password: $password"
+    echo "  existing_storage_pools: default"
+    echo "  existing_cluster: false"
+    echo "  password: $password"
+    echo "  sds_on_controller: $sds_on_controller"
+    echo "  metadata:"
+    echo "    plugin_id: 2"
+    echo "    enabled: true"
+    echo "    toggleable: true"
+    echo "    weight: 70"
+    echo "    label: ScaleIOv2.0 plugin"
+}
