@@ -7,21 +7,21 @@ juju-log "Fuel-master relation triggered on ${JUJU_REMOTE_UNIT}"
 timestamp=`relation-get timestamp`
 stage=`relation-get stage`
 if [ -n "$timestamp" ]; then
-  if (( timestamp == 0 )); then
-    setup
-  fi
-  parse_tasks
-  mkdir -p /var/lib/hiera
-  echo "$node_yaml" > /var/lib/hiera/defaults.yaml
-  for puppet in ${!puppet_stage_map[*]}; do
-    if (( puppet_stage_map[$puppet] == stage )); then
-      juju-log "Executing puppet $puppet on stage $stage"
-      exec_puppet $puppet
+    if (( timestamp == 0 )); then
+        setup
     fi
-  done
-  timestamp=$(( timestamp + 1 ))
-  roles=`config-get roles`
-  relation-set roles=$roles
-  relation-set timestamp=$timestamp
-  juju-log "Node $JUJU_UNIT_NAME is ready to move to next stage, timestamp: $timestamp"
+    parse_tasks
+    mkdir -p /var/lib/hiera
+    echo "$node_yaml" > /var/lib/hiera/defaults.yaml
+    for puppet in ${!puppet_stage_map[*]}; do
+        if (( puppet_stage_map[$puppet] == stage )); then
+            juju-log "Executing puppet $puppet on stage $stage"
+            exec_puppet $puppet
+        fi
+    done
+    timestamp=$(( timestamp + 1 ))
+    roles=`config-get roles`
+    relation-set roles="$roles"
+    relation-set timestamp=$timestamp
+    juju-log "Node $JUJU_UNIT_NAME is ready to move to next stage, timestamp: $timestamp"
 fi

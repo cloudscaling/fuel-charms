@@ -6,7 +6,7 @@ juju-log "Fuel-master relation joined on ${JUJU_REMOTE_UNIT}"
 
 hostname=`hostname`
 roles=`config-get roles`
-relation-set roles=$roles
+relation-set roles="$roles"
 relation-set hostname=$hostname
 
 juju-log "Hostname: $hostname, Roles: $roles"

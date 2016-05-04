@@ -28,12 +28,12 @@ function setup {
 declare -A puppet_stage_map=()
 
 function parse_tasks {
-    roles=("`config-get roles`")
+    roles=`config-get roles`
     yaml="$manifests_path/../../../tasks.yaml"
     puppets=(`grep puppet_manifest $yaml | cut -d "/" -f 3`)
     for puppet in ${puppets[*]}; do
         puppet_roles="`grep -B 4 $puppet $yaml | grep role`"
-        for role in ${roles[*]}; do
+        for role in $roles ; do
             if [[ $puppet_roles == *"$role"* ]]; then
                 puppet_stage_map[$puppet]="`grep -B 3 /$puppet $yaml | grep stage | cut -d "/" -f 2`"
                 break

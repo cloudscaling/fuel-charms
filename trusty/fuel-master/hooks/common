@@ -36,8 +36,8 @@ function retrieve-nodes-info {
             local roles=`relation-get -r $rid roles $unit`
             local ip=`relation-get -r $rid private-address $unit`
             local hostname=`relation-get -r $rid hostname $unit`
-            if [ -z "${roles}" ]; then exit; fi
-            if [[ $roles == *"controller"* ]]; then
+            if [ -z "$roles" ]; then exit; fi
+            if [[ "$roles" =~ controller ]]; then
                 management_vip=$ip
             fi
             node_roles[$unit]="$roles"
@@ -72,7 +72,7 @@ function prepare_node_yaml {
         juju-log "ROLES: $roles, ${node_roles[$node]}"
         name=${node_names[$node]}
 
-        for role in "${roles[*]}"; do
+        for role in ${roles[*]}; do
             echo "- uid: '${node}'"
             echo "  role: ${role}"
             echo "  internal_address: ${node_ips[$node]}"

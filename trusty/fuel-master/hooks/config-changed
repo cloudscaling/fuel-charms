@@ -6,6 +6,7 @@ juju-log "Fuel-master config changed"
 
 rids=`relation-ids fuel-master`
 manifests_path=`config-get manifests-path`
+modules_path=`config-get modules-path`
 
 if [ -n "$rids" ]; then
     node_yaml=`prepare_node_yaml`
