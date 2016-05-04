@@ -3,8 +3,8 @@ set -eu
 
 rids=(`relation-ids fuel-master`)
 if [ -n "${rids[*]+x}" ]; then
-	rid=${rids[0]}
-	if [ -z "${rid}" ]; then exit; fi
-	roles=`config-get roles`
-	relation-set -r $rid roles=$roles
+  rid=${rids[0]}
+  if [ -z "${rid}" ]; then exit; fi
+  roles=`config-get roles`
+  relation-set -r $rid roles=$roles
 fi

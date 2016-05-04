@@ -7,18 +7,18 @@ modules_path=`relation-get modules_path`
 manifests_path=`relation-get manifests_path`
 
 function exec_puppet {
-	juju-log "Running puppet '$1'"
-	set +e
+    juju-log "Running puppet '$1'"
+    set +e
     juju-log "FACTERLIB=$facters puppet apply --modulepath=${modules_path} ${manifests_path}/$1"
     FACTERLIB=$facters puppet apply --modulepath="${modules_path}" "${manifests_path}/$1" --detailed-exitcodes
-	local exit_code=$?
-	if [[ $exit_code == 0 || $exit_code == 2 ]]; then
-		juju-log "The run succeeded. Exit code is $exit_code."
-	else
-		juju-log "The run failed. Exit code is $exit_code."
-		exit 1
-	fi
-	set -e
+    local exit_code=$?
+    if [[ $exit_code == 0 || $exit_code == 2 ]]; then
+        juju-log "The run succeeded. Exit code is $exit_code."
+    else
+        juju-log "The run failed. Exit code is $exit_code."
+        exit 1
+    fi
+    set -e
 }
 
 function setup {

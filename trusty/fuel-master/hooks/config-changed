@@ -8,16 +8,16 @@ rids=`relation-ids fuel-master`
 manifests_path=`config-get manifests-path`
 
 if [ -n "$rids" ]; then
-	node_yaml=`prepare_node_yaml`
-	
-	parse_tasks
-	for rid in $rids; do
-		relation-set -r $rid stage="${stages[0]}"
-		relation-set -r $rid timestamp='0'
-		
-		relation-set -r $rid node_yaml="$node_yaml"
+    node_yaml=`prepare_node_yaml`
+
+    parse_tasks
+    for rid in $rids; do
+        relation-set -r $rid stage="${stages[0]}"
+        relation-set -r $rid timestamp='0'
+
+        relation-set -r $rid node_yaml="$node_yaml"
         relation-set -r $rid facters="$facters"
-	    relation-set -r $rid modules_path="$modules_path"
-		relation-set -r $rid manifests_path="$manifests_path"
+        relation-set -r $rid modules_path="$modules_path"
+        relation-set -r $rid manifests_path="$manifests_path"
     done
 fi

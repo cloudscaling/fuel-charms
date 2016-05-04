@@ -4,7 +4,6 @@ set -eu
 declare stages=()
 stage_count=0
 facters=`config-get facters`
-modules_path=`config-get modules-path`
 manifests_path=`config-get manifests-path`
 
 function parse_tasks {
@@ -31,7 +30,7 @@ function convert-name {
 }
 
 function retrieve-nodes-info {
-    for rid in $rids; do        
+    for rid in $rids; do
         units=`relation-list -r $rid`
         for unit in $units; do
             local roles=`relation-get -r $rid roles $unit`
@@ -44,24 +43,24 @@ function retrieve-nodes-info {
             node_roles[$unit]="$roles"
             node_ips[$unit]="$ip"
             node_names[$unit]="$hostname"
-        done    
+        done
     done
-}   
+}
 
 function prepare_node_yaml {
     if [[ -z ${rids[*]+x} ]]; then exit 0; fi
 
     retrieve-nodes-info
-    
+
     juju-log "`declare -p node_roles`"
     juju-log "`declare -p node_ips`"
-    
+
     storage_pools=`config-get storage-pools`
     device_paths=`config-get device-paths`
     protection_domain=`config-get protection-domain`
     password=`config-get password`
     sds_on_controller=`config-get sds-on-controller`
-    
+
     echo "---"
     echo "management_vip: $management_vip"
     echo "public_vip: $management_vip"
@@ -72,7 +71,7 @@ function prepare_node_yaml {
         roles=(${node_roles[$node]})
         juju-log "ROLES: $roles, ${node_roles[$node]}"
         name=${node_names[$node]}
-        
+
         for role in "${roles[*]}"; do
             echo "- uid: '${node}'"
             echo "  role: ${role}"
