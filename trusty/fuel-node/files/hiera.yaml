@@ -1,0 +1,13 @@
+:backends:
+  - yaml
+  - json
+:yaml:
+  :datadir: /var/lib/hiera
+:json:
+  :datadir: /var/lib/hiera
+:hierarchy:
+  - "%{clientcert}"
+  - "%{datacenter}"
+  - "%{osfamily}"
+  - common
+  - defaults

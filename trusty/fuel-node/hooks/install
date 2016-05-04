@@ -1,12 +1,16 @@
 #!/bin/bash
 
-apt-get install -y puppet
+apt-get install -fy puppet git
 puppet module install puppetlabs-firewall
 puppet module install puppetlabs-stdlib
 puppet module install puppetlabs-inifile
 puppet module install puppetlabs-haproxy
 puppet module install --version "<0.4.0" cloudscaling-scaleio_openstack
 puppet module install --version "<0.4.0" cloudscaling-scaleio
+
+pushd /root
+git clone https://github.com/cloudscaling/fuel-plugin-scaleio.git
+popd
 
 # TODO: remove when packages will be in official repo
 apt_repo=`config-get scaleio-apt-repo`
@@ -24,5 +28,5 @@ EOF
 fi
 
 my_dir="$(dirname "$0")"
-cp /etc/hiera.yaml /etc/puppet
+cp "$my_dir/../files/hiera.yaml" /etc/puppet
 cp -r "$my_dir/../files/modules" /etc/puppet

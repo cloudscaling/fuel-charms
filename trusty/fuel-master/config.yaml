@@ -25,7 +25,7 @@ options:
         description: "Is SDS on controller"
     facters:
         type: string
-        default: "/home/alevine/shared/fuel_plugin_scaleio/deployment_scripts/puppet/modules/scaleio_fuel/lib/facter:/etc/puppet/modules/scaleio_openstack/lib/facter"
+        default: "/root/fuel-plugin-scaleio/deployment_scripts/puppet/modules/scaleio_fuel/lib/facter:/etc/puppet/modules/scaleio_openstack/lib/facter"
         description: "Facters to set up before calling puppets"
     modules-path:
         type: string
@@ -33,5 +33,5 @@ options:
         description: "Path to puppet modules"
     manifests-path:
         type: string
-        default: "/home/alevine/shared/fuel_plugin_scaleio/deployment_scripts/puppet/manifests"
+        default: "/root/fuel-plugin-scaleio/deployment_scripts/puppet/manifests"
         description: "Puppet manifests path"
