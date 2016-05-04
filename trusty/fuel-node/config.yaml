@@ -1,5 +1,10 @@
 options:
-    roles:
-        type: string
-        default: "controller"
-        description: "Space separated list of fuel roles"
+  roles:
+    type: string
+    default: "controller"
+    description: "Space separated list of fuel roles"
+  scaleio-apt-repo:
+    type: string
+    default: "http://ec2-52-37-140-129.us-west-2.compute.amazonaws.com"
+    description: |
+      Optional. URL of apt repo where charm can find ScaleIO packages.
