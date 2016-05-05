@@ -1,15 +1,25 @@
 #!/bin/bash
 
-apt-get install -fy puppet git
+apt-get install -fy puppet git haproxy
 puppet module install puppetlabs-firewall
 puppet module install puppetlabs-stdlib
 puppet module install puppetlabs-inifile
-puppet module install puppetlabs-haproxy
+puppet module install puppetlabs-concat
 puppet module install --version "<0.4.0" cloudscaling-scaleio_openstack
 puppet module install --version "<0.4.0" cloudscaling-scaleio
 
 pushd /root
 git clone https://github.com/cloudscaling/fuel-plugin-scaleio.git
+cd fuel-plugin-scaleio
+
+# remove gateway from tasks.yaml
+# it tries to install haproxy but 'ocf' package is absent
+mv tasks.yaml tasks.yaml.bak
+cat tasks.yaml.bak | sed -e '/gateway/{n;N;N;d}' | tac | sed -e '/gateway/{N;N;N;N;d}' | tac > tasks.yaml
+
+# hack to avoid problems at haproxy configuring stage
+# mkdir -p /etc/haproxy/conf.d
+
 popd
 
 # TODO: remove when packages will be in official repo
