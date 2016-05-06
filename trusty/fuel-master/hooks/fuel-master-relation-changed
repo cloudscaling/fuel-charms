@@ -49,6 +49,11 @@ if [ -n "$rids" ]; then
         juju-log "Deployment finished"
     fi
     for rid in $rids; do
+        # set timestamp back because unit doesn't see what it set
+        for unit in `relation-list -r $rid` ; do
+            cname=`convert-name $unit`
+            relation-set -r $rid timestamp-$cname=$timestamp
+        done
         relation-set -r $rid stage="$stage"
     done
 fi
