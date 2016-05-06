@@ -4,6 +4,8 @@ my_dir="$(dirname "$0")"
 
 juju-log "Fuel-master config changed"
 
+status-set maintenance
+
 manifests_path=`config-get manifests-path`
 modules_path=`config-get modules-path`
 

@@ -46,6 +46,7 @@ if [ -n "$rids" ]; then
         juju-log "Moving to stage $timestamp - ${stages[$timestamp]}"
     else
         stage=""
+        status-set active
         juju-log "Deployment finished"
     fi
     for rid in $rids; do
