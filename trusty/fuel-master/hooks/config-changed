@@ -14,6 +14,10 @@ if [ -n "$rids" ]; then
     parse_tasks
     for rid in $rids; do
         relation-set -r $rid stage="${stages[0]}"
+        for unit in `relation-list -r $rid` ; do
+            cname=`convert-name $unit`
+            relation-set -r $rid timestamp-$cname='0'
+        done
 
         relation-set -r $rid node_yaml="$node_yaml"
         relation-set -r $rid facters="$facters"

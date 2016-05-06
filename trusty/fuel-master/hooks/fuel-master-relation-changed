@@ -11,7 +11,7 @@ if [ -n "$rids" ]; then
     declare -A timestamps=()
     for rid in $rids; do
         units=`relation-list -r $rid`
-        for unit in $units; do
+        for unit in $units ; do
             cname=`convert-name $unit`
             unit_timestamp=`relation-get -r $rid timestamp-$cname $unit`
             if [ -z "$unit_timestamp" ] ; then
