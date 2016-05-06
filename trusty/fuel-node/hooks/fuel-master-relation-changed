@@ -5,9 +5,12 @@ my_dir="$(dirname "$0")"
 juju-log "Fuel-master relation triggered on ${JUJU_REMOTE_UNIT}"
 
 my_unit=`convert-name $JUJU_UNIT_NAME`
-timestamp=`relation-get timestamp-$my_unit`
 stage=`relation-get stage`
-if [[ -n "$timestamp" && -n "$stage" ]]; then
+if [ -n "$stage" ]; then
+    timestamp=`relation-get timestamp-$my_unit`
+    if [ -z "$timestamp" ] ; then
+        timestamp='0'
+    fi
     if (( timestamp == 0 )); then
         setup
     fi
