@@ -4,36 +4,51 @@ my_dir="$(dirname "$0")"
 
 juju-log "Fuel-master relation triggered on master with remote: ${JUJU_REMOTE_UNIT}"
 
-timestamp=`relation-get timestamp $JUJU_UNIT_NAME`
-
-if [ -z "$timestamp" ]; then exit; fi
-
 rids=`relation-ids fuel-master`
 if [ -n "$rids" ]; then
-    juju-log "Fuel-node ${JUJU_REMOTE_UNIT} is ready for the next stage"
+    juju-log "Fuel-node $JUJU_REMOTE_UNIT is ready for the next stage"
+    # collect timestamps from units
+    declare -A timestamps=()
     for rid in $rids; do
         units=`relation-list -r $rid`
         for unit in $units; do
-            unit_timestamp=`relation-get -r $rid timestamp $unit`
-            if [ -z "${unit_timestamp}" ] || (( unit_timestamp <= timestamp )); then
-                juju-log "Not ready to move to the next stage because of ${unit}"
+            cname=`convert-name $unit`
+            unit_timestamp=`relation-get -r $rid timestamp-$cname $unit`
+            if [ -z "$unit_timestamp" ] ; then
+                juju-log "Not ready to move to the next stage because of $cname doesn't have timestamp"
                 exit
             fi
+            timestamps[$cname]=$unit_timestamp
         done
     done
 
+    # find max timestamp
+    timestamp=0
+    for cname in ${!timestamps[@]} ; do
+        t=${timestamps[$cname]}
+        if (( t > timestamp )) ; then
+            timestamp=$t
+        fi
+    done
+    # check that there is no units with smaller timestamp
+    for cname in ${!timestamps[@]} ; do
+        t=${timestamps[$cname]}
+        if (( t < timestamp )) ; then
+            juju-log "Not ready to move to the next stage because of $cname ($t < $timestamp)"
+            exit
+        fi
+    done
+    juju-log "All nodes are waiting for moving to next stage: $timestamp"
+
     parse_tasks
-    timestamp=$(( timestamp + 1 ))
     if (( timestamp < stage_count )); then
-        for rid in $rids; do
-            relation-set -r $rid timestamp=$timestamp
-            relation-set -r $rid stage="${stages[$timestamp]}"
-        done
-        juju-log "Moving to stage ${timestamp} - ${stages[$timestamp]}"
+        stage="${stages[$timestamp]}"
+        juju-log "Moving to stage $timestamp - ${stages[$timestamp]}"
     else
-        for rid in $rids; do
-            relation-set -r $rid timestamp=
-        done
+        stage=""
         juju-log "Deployment finished"
     fi
+    for rid in $rids; do
+        relation-set -r $rid stage="$stage"
+    done
 fi
