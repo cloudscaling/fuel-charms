@@ -3,5 +3,6 @@
 apt-get install -fy git
 
 pushd /root
+rm -rf fuel-plugin-scaleio
 git clone https://github.com/cloudscaling/fuel-plugin-scaleio.git
 popd
