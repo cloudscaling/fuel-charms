@@ -6,13 +6,9 @@ juju-log "Fuel-master relation triggered on ${JUJU_REMOTE_UNIT}"
 
 status-set maintenance
 
-my_unit=`convert-name $JUJU_UNIT_NAME`
+timestamp=`relation-get timestamp`
 stage=`relation-get stage`
-if [ -n "$stage" ]; then
-    timestamp=`relation-get timestamp-$my_unit`
-    if [ -z "$timestamp" ] ; then
-        timestamp='0'
-    fi
+if [ -n "$timestamp" ]; then
     if (( timestamp == 0 )); then
         setup
     fi
@@ -28,7 +24,7 @@ if [ -n "$stage" ]; then
     (( ++timestamp ))
     roles=`config-get roles`
     relation-set roles="$roles"
-    relation-set "timestamp-$my_unit"=$timestamp
+    relation-set timestamp=$timestamp
     juju-log "Node $JUJU_UNIT_NAME is ready to move to next stage, timestamp: $timestamp"
 else
     status-set active

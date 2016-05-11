@@ -26,7 +26,7 @@ declare -A node_names=()
 management_vip='127.0.0.1'
 
 function convert-name {
-    echo ${1//[-\/]/_}
+  echo ${1//[-\/]/_}
 }
 
 function retrieve-nodes-info {

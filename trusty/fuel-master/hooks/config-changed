@@ -16,6 +16,7 @@ if [ -n "$rids" ]; then
     parse_tasks
     for rid in $rids; do
         relation-set -r $rid stage="${stages[0]}"
+        relation-set -r $rid timestamp='0'
 
         relation-set -r $rid node_yaml="$node_yaml"
         relation-set -r $rid facters="$facters"

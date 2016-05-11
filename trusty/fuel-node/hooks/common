@@ -6,10 +6,6 @@ facters=`relation-get facters`
 modules_path=`relation-get modules_path`
 manifests_path=`relation-get manifests_path`
 
-function convert-name {
-    echo ${1//[-\/]/_}
-}
-
 function exec_puppet {
     juju-log "Running puppet '$1'"
     set +e
