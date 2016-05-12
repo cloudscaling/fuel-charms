@@ -27,5 +27,6 @@ if [ -n "$timestamp" ]; then
     relation-set timestamp=$timestamp
     juju-log "Node $JUJU_UNIT_NAME is ready to move to next stage, timestamp: $timestamp"
 else
+    relation-set timestamp=
     status-set active
 fi
