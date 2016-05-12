@@ -1,0 +1,67 @@
+series: trusty
+services: 
+  "fuel-master": 
+    charm: "local:trusty/fuel-master"
+    num_units: 1
+    options:
+      skip-checks: "true"
+    annotations: 
+      "gui-x": "795"
+      "gui-y": "299"
+    to: 
+      - "0"
+  "fuel-primary-controller": 
+    charm: "local:trusty/fuel-node"
+    num_units: 1
+    options: 
+      roles: "primary-controller cinder"
+    annotations: 
+      "gui-x": "1190"
+      "gui-y": "394"
+    to: 
+      - "0"
+  "fuel-controller": 
+    charm: "local:trusty/fuel-node"
+    num_units: 2
+    options: 
+      roles: controller cinder
+    annotations: 
+      "gui-x": "1585"
+      "gui-y": "489"
+    to: 
+      - "1"
+      - "2"
+  "fuel-compute": 
+    charm: "local:trusty/fuel-node"
+    num_units: 2
+    options: 
+      roles: compute
+    annotations: 
+      "gui-x": "1980"
+      "gui-y": "584"
+    to: 
+      - "3"
+      - "4"
+relations: 
+  - - "fuel-master:fuel-master"
+    - "fuel-primary-controller:fuel-master"
+  - - "fuel-master:fuel-master"
+    - "fuel-controller:fuel-master"
+  - - "fuel-master:fuel-master"
+    - "fuel-compute:fuel-master"
+machines: 
+  "0": 
+    series: trusty
+    constraints: "arch=amd64 cpu-cores=2 mem=3954"
+  "1": 
+    series: trusty
+    constraints: "arch=amd64 cpu-cores=2 mem=2000"
+  "2": 
+    series: trusty
+    constraints: "arch=amd64 cpu-cores=2 mem=2000"
+  "3": 
+    series: trusty
+    constraints: "arch=amd64 cpu-cores=2 mem=2000"
+  "4": 
+    series: trusty
+    constraints: "arch=amd64 cpu-cores=2 mem=2000"

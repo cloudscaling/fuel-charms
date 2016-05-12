@@ -60,7 +60,8 @@ function prepare_node_yaml {
     protection_domain=`config-get protection-domain`
     password=`config-get password`
     sds_on_controller=`config-get sds-on-controller`
-
+    skip_checks=`config-get skip-checks`
+    
     echo "---"
     echo "management_vip: $management_vip"
     echo "public_vip: $management_vip"
@@ -93,6 +94,7 @@ function prepare_node_yaml {
     echo "  existing_cluster: false"
     echo "  password: $password"
     echo "  sds_on_controller: $sds_on_controller"
+    echo "  skip_checks: $skip_checks"
     echo "  metadata:"
     echo "    plugin_id: 2"
     echo "    enabled: true"
