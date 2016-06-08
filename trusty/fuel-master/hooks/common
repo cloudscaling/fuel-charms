@@ -7,7 +7,11 @@ facters=`config-get facters`
 manifests_path=`config-get manifests-path`
 
 function parse_tasks {
-    stage_array=(`grep stage $manifests_path/../../../tasks.yaml | cut -d "/" -f 2`)
+    if [[ -f "$manifests_path/../../../deployment_tasks.yaml" ]]; then
+        stage_array=(`python parse_deployment_tasks.py --stages --file $manifests_path/../../../deployment_tasks.yaml`)
+    else
+        stage_array=(`grep stage $manifests_path/../../../tasks.yaml | cut -d "/" -f 2`)        
+    fi
     declare -A stage_hash=()
     for stage in ${stage_array[*]}; do
         stage_hash[$stage]=''

@@ -29,16 +29,31 @@ declare -A puppet_stage_map=()
 
 function parse_tasks {
     roles=`config-get roles`
-    yaml="$manifests_path/../../../tasks.yaml"
-    puppets=(`grep puppet_manifest $yaml | cut -d "/" -f 3`)
-    for puppet in ${puppets[*]}; do
-        puppet_roles="`grep -B 4 $puppet $yaml | grep role`"
-        for role in $roles ; do
-            if [[ $puppet_roles == *"$role"* ]]; then
-                puppet_stage_map[$puppet]="`grep -B 3 /$puppet $yaml | grep stage | cut -d "/" -f 2`"
-                break
-            fi
+    if [[ -f "$manifests_path/../../../deployment_tasks.yaml" ]]; then
+        yaml="$manifests_path/../../../deployment_tasks.yaml"
+        tasks=(`python parse_deployment_tasks.py --tasks --file $yaml`)
+        for task in ${tasks[*]}; do
+            puppet_roles="`echo $task | cut -d ':' -f 2`"
+            for role in $roles ; do
+                if [[ $puppet_roles == *"$role"* ]]; then
+                    puppet=`echo $task | cut -d ':' -f 3`
+                    puppet_stage_map[$puppet]="`echo $task | cut -d ':' -f 1`"
+                    break
+                fi
+            done
         done
-    done
+    else
+        yaml="$manifests_path/../../../tasks.yaml"
+        puppets=(`grep puppet_manifest $yaml | cut -d "/" -f 3`)
+        for puppet in ${puppets[*]}; do
+            puppet_roles="`grep -B 4 $puppet $yaml | grep role`"
+            for role in $roles ; do
+                if [[ $puppet_roles == *"$role"* ]]; then
+                    puppet_stage_map[$puppet]="`grep -B 3 /$puppet $yaml | grep stage | cut -d "/" -f 2`"
+                    break
+                fi
+            done
+        done
+    fi
     juju-log "Stage puppets: `declare -p puppet_stage_map`"
 }
