@@ -1,6 +1,8 @@
 #!/bin/bash
 set -eu
 
+my_dir="$(dirname "$0")"
+
 node_yaml=`relation-get node_yaml`
 facters=`relation-get facters`
 modules_path=`relation-get modules_path`
@@ -31,7 +33,7 @@ function parse_tasks {
     roles=`config-get roles`
     if [[ -f "$manifests_path/../../../deployment_tasks.yaml" ]]; then
         yaml="$manifests_path/../../../deployment_tasks.yaml"
-        tasks=(`python parse_deployment_tasks.py --tasks --file $yaml`)
+        tasks=(`python ${my_dir}/parse_deployment_tasks.py --tasks --file $yaml`)
         for task in ${tasks[*]}; do
             puppet_roles="`echo $task | cut -d ':' -f 2`"
             for role in $roles ; do

@@ -18,6 +18,10 @@ class TaskProcessor:
 
     @property
     def tasks(self):
+        '''
+            Returns list of tasks in format stage:list_of_roles:puppet_file.
+            list_of_roles - is comma separated list.
+        '''
         self.__process()
         tasks_list = []
         stage = FIRST_STAGE
@@ -31,11 +35,18 @@ class TaskProcessor:
 
     @property
     def stages(self):
+        '''
+            Returns list of stages 2000, 2010, ....
+            It is emulation of tasks.yaml, to keep test logic the same.
+        '''
         return [i.split(':')[0] for i in self.tasks]
 
     def __process(self):
         for task in self.__deployment_tasks:
             self.__process_task(task)
+        # remove scaleio-gateway-server task because it uses old haproxy from fuel
+        # which is not supported in juju emulator 
+        self.__tasks.remove('scaleio-gateway-server')
     
     def __process_task(self, task):
         name = task['id']

@@ -1,6 +1,8 @@
 #!/bin/bash
 set -eu
 
+my_dir="$(dirname "$0")"
+
 declare stages=()
 stage_count=0
 facters=`config-get facters`
@@ -8,7 +10,7 @@ manifests_path=`config-get manifests-path`
 
 function parse_tasks {
     if [[ -f "$manifests_path/../../../deployment_tasks.yaml" ]]; then
-        stage_array=(`python parse_deployment_tasks.py --stages --file $manifests_path/../../../deployment_tasks.yaml`)
+        stage_array=(`python ${my_dir}/parse_deployment_tasks.py --stages --file $manifests_path/../../../deployment_tasks.yaml`)
     else
         stage_array=(`grep stage $manifests_path/../../../tasks.yaml | cut -d "/" -f 2`)        
     fi
