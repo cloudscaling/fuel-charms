@@ -67,6 +67,7 @@ function prepare_node_yaml {
     password=`config-get password`
     sds_on_controller=`config-get sds-on-controller`
     skip_checks=`config-get skip-checks`
+    zero_padding=`config-get zero-padding`
     
     echo "---"
     echo "management_vip: $management_vip"
@@ -101,6 +102,7 @@ function prepare_node_yaml {
     echo "  password: $password"
     echo "  sds_on_controller: $sds_on_controller"
     echo "  skip_checks: $skip_checks"
+    echo "  zero_padding: $zero_padding"
     echo "  metadata:"
     echo "    plugin_id: 2"
     echo "    enabled: true"
