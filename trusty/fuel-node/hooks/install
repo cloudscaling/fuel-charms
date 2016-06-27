@@ -15,8 +15,10 @@ cd fuel-plugin-scaleio
 
 # remove gateway from tasks.yaml
 # it tries to install haproxy but 'ocf' package is absent
-mv tasks.yaml tasks.yaml.bak
-cat tasks.yaml.bak | sed -e '/gateway/{n;N;N;d}' | tac | sed -e '/gateway/{N;N;N;N;d}' | tac > tasks.yaml
+if [ -f tasks.yaml ]; then 
+    mv tasks.yaml tasks.yaml.bak
+    cat tasks.yaml.bak | sed -e '/gateway/{n;N;N;d}' | tac | sed -e '/gateway/{N;N;N;N;d}' | tac > tasks.yaml
+fi
 
 # hack to avoid problems at haproxy configuring stage
 # mkdir -p /etc/haproxy/conf.d
