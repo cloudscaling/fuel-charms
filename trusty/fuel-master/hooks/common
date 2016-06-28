@@ -68,7 +68,14 @@ function prepare_node_yaml {
     sds_on_controller=`config-get sds-on-controller`
     skip_checks=`config-get skip-checks`
     zero_padding=`config-get zero-padding`
-    
+    checksum_mode=`config-get checksum-mode`
+    scanner_mode=`config-get scanner-mode`
+    spare_policy=`config-get spare-policy`
+    capacity_high_alert_threshold=`config-get capacity-high-alert-threshold`
+    capacity_critical_alert_threshold=`config-get capacity-critical-alert-threshold`
+    rfcache_devices=`config-get rfcache-devices`
+    cached_storage_pools=`config-get cached-storage-pools`
+
     echo "---"
     echo "management_vip: $management_vip"
     echo "public_vip: $management_vip"
@@ -103,6 +110,13 @@ function prepare_node_yaml {
     echo "  sds_on_controller: $sds_on_controller"
     echo "  skip_checks: $skip_checks"
     echo "  zero_padding: $zero_padding"
+    echo "  checksum_mode: $checksum_mode"
+    echo "  scanner_mode: $scanner_mode"
+    echo "  spare_policy: $spare_policy"
+    echo "  capacity_high_alert_threshold: $capacity_high_alert_threshold"
+    echo "  capacity_critical_alert_threshold: $capacity_critical_alert_threshold"
+    echo "  rfcache_devices: $rfcache_devices"
+    echo "  cached_storage_pools: $cached_storage_pools"
     echo "  metadata:"
     echo "    plugin_id: 2"
     echo "    enabled: true"
