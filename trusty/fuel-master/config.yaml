@@ -43,3 +43,31 @@ options:
         type: string
         default: "false"
         description: "Zero padding: false / true"
+    checksum-mode:
+        type: string
+        default: "false"
+        description: "Checksum mode: false / true"
+    scanner-mode:
+        type: string
+        default: "false"
+        description: "Scanner mode: false / true"
+    spare-policy:
+        type: string
+        default: "10"
+        description: "Spare percentage: %"
+    capacity-high-alert-threshold:
+        type: string
+        default: "80"
+        description: "Capacity high priority alert 0-99"
+    capacity-critical-alert-threshold:
+        type: string
+        default: "90"
+        description: "Capacity critical priority alert 0-99"
+    rfcache-devices:
+        type: string
+        default: ""
+        description: "XtremCache devices, /dev/sdb,/dev/sdc"
+    cached-storage-pools:
+        type: string
+        default: ""
+        description: "XtremCache storage pools"
