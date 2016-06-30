@@ -4,5 +4,7 @@ apt-get install -fy git
 
 pushd /root
 rm -rf fuel-plugin-scaleio
+branch=`config-get branch-name`
 git clone https://github.com/cloudscaling/fuel-plugin-scaleio.git
+git checkout $branch
 popd

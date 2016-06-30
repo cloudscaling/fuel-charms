@@ -8,3 +8,7 @@ options:
     default: "http://scaleio-packages.s3-website-us-east-1.amazonaws.com"
     description: |
       Optional. URL of apt repo where charm can find ScaleIO packages.
+  branch-name:
+    type: string
+    default: "master"
+    description: "Branch of fuel-plugin-scaleio"
