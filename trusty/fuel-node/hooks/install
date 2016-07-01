@@ -10,7 +10,9 @@ puppet module install --version "<0.5.0" cloudscaling-scaleio
 
 pushd /root
 rm -rf fuel-plugin-scaleio
+branch=`config-get branch-name`
 git clone https://github.com/cloudscaling/fuel-plugin-scaleio.git
+git checkout $branch
 cd fuel-plugin-scaleio
 
 # remove gateway from tasks.yaml

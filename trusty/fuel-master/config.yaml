@@ -71,3 +71,7 @@ options:
         type: string
         default: ""
         description: "XtremCache storage pools"
+    branch-name:
+        type: string
+        default: "master"
+        description: "Branch of fuel-plugin-scaleio"
