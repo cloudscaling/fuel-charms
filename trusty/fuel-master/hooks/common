@@ -75,6 +75,8 @@ function prepare_node_yaml {
     capacity_critical_alert_threshold=`config-get capacity-critical-alert-threshold`
     rfcache_devices=`config-get rfcache-devices`
     cached_storage_pools=`config-get cached-storage-pools`
+    branch_name=`config-get branch-name`
+    protection_domain_nodes=`config-get protection-domain-nodes`
 
     echo "---"
     echo "management_vip: $management_vip"
@@ -117,6 +119,8 @@ function prepare_node_yaml {
     echo "  capacity_critical_alert_threshold: $capacity_critical_alert_threshold"
     echo "  rfcache_devices: $rfcache_devices"
     echo "  cached_storage_pools: $cached_storage_pools"
+    echo "  branch_name: $branch_name"
+    echo "  protection_domain_nodes: $protection_domain_nodes"
     echo "  metadata:"
     echo "    plugin_id: 2"
     echo "    enabled: true"
