@@ -76,6 +76,7 @@ function prepare_node_yaml {
     rfcache_devices=`config-get rfcache-devices`
     cached_storage_pools=`config-get cached-storage-pools`
     protection_domain_nodes=`config-get protection-domain-nodes`
+    metadata_enabled=`config-get metadata-enabled`
 
     echo "---"
     echo "management_vip: $management_vip"
@@ -121,7 +122,7 @@ function prepare_node_yaml {
     echo "  protection_domain_nodes: $protection_domain_nodes"
     echo "  metadata:"
     echo "    plugin_id: 2"
-    echo "    enabled: true"
+    echo "    enabled: $metadata_enabled"
     echo "    toggleable: true"
     echo "    weight: 70"
     echo "    label: ScaleIOv2.0 plugin"
