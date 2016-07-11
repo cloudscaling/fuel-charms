@@ -79,7 +79,23 @@ options:
         type: string
         default: "100"
         description: "Maximum number of nodes in one protection domain"
+    existing-cluster:
+        type: string
+        default: 'false'
+        description: "Use existing ScaleIO."
     metadata-enabled:
         type: string
-        default: "true"
+        default: 'true'
         description: "ScaleIO enabled."
+    gateway-ip:
+        type: string
+        default: ''
+        description: "IP address of gateway"
+    gateway-port:
+        type: string
+        default: "4443"
+        description: "Port of gateway"
+    gateway-user:
+        type: string
+        default: admin
+        description: "User of gateway"
