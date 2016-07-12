@@ -76,7 +76,11 @@ function prepare_node_yaml {
     rfcache_devices=`config-get rfcache-devices`
     cached_storage_pools=`config-get cached-storage-pools`
     protection_domain_nodes=`config-get protection-domain-nodes`
+    existing_cluster=`config-get existing-cluster`
     metadata_enabled=`config-get metadata-enabled`
+    gateway_ip=`config-get gateway-ip`
+    gateway_port=`config-get gateway-port`
+    gateway_user=`config-get gateway-user`
 
     echo "---"
     echo "management_vip: $management_vip"
@@ -101,13 +105,13 @@ function prepare_node_yaml {
     echo "  storage_pools: $storage_pools"
     echo "  device_paths: $device_paths"
     echo "  protection_domain: $protection_domain"
-    echo "  gateway_user: admin"
-    echo "  gateway_port: '4443'"
+    echo "  gateway_user: $gateway_user"
+    echo "  gateway_port: $gateway_port"
     echo "  version: '2.0'"
-    echo "  gateway_ip: ''"
+    echo "  gateway_ip: $gateway_ip"
     echo "  gateway_password: $password"
     echo "  existing_storage_pools: default"
-    echo "  existing_cluster: false"
+    echo "  existing_cluster: $existing_cluster"
     echo "  password: $password"
     echo "  sds_on_controller: $sds_on_controller"
     echo "  skip_checks: $skip_checks"
