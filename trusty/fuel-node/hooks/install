@@ -11,9 +11,9 @@ puppet module install --version "<0.5.0" cloudscaling-scaleio
 pushd /root
 rm -rf fuel-plugin-scaleio
 branch=`config-get branch-name`
-git clone https://github.com/cloudscaling/fuel-plugin-scaleio.git
-git checkout $branch
+git clone https://github.com/openstack/fuel-plugin-scaleio.git
 cd fuel-plugin-scaleio
+git checkout $branch
 
 # remove gateway from tasks.yaml
 # it tries to install haproxy but 'ocf' package is absent
