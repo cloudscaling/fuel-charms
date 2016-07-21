@@ -20,8 +20,8 @@ options:
         default: "Default_password"
         description: "Password"
     sds-on-controller:
-        type: string
-        default: "true"
+        type: boolean
+        default: true
         description: "Is SDS on controller"
     facters:
         type: string
@@ -40,16 +40,16 @@ options:
         default: "false"
         description: "Skip platform validation checks"
     zero-padding:
-        type: string
-        default: "false"
+        type: boolean
+        default: false
         description: "Zero padding: false / true"
     checksum-mode:
-        type: string
-        default: "false"
+        type: boolean
+        default: false
         description: "Checksum mode: false / true"
     scanner-mode:
-        type: string
-        default: "false"
+        type: boolean
+        default: false
         description: "Scanner mode: false / true"
     spare-policy:
         type: string
@@ -80,12 +80,12 @@ options:
         default: "100"
         description: "Maximum number of nodes in one protection domain"
     existing-cluster:
-        type: string
-        default: 'false'
+        type: boolean
+        default: false
         description: "Use existing ScaleIO."
     metadata-enabled:
-        type: string
-        default: 'true'
+        type: boolean
+        default: true
         description: "ScaleIO enabled."
     gateway-ip:
         type: string
