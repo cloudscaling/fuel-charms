@@ -36,8 +36,8 @@ options:
         default: "/root/fuel-plugin-scaleio/deployment_scripts/puppet/manifests"
         description: "Puppet manifests path"
     skip-checks:
-        type: string
-        default: "false"
+        type: boolean
+        default: false
         description: "Skip platform validation checks"
     zero-padding:
         type: boolean
