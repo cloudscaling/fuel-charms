@@ -5,8 +5,8 @@ puppet module install puppetlabs-firewall
 puppet module install puppetlabs-stdlib
 puppet module install puppetlabs-inifile
 puppet module install puppetlabs-concat
-puppet module install --version "<0.5.0" cloudscaling-scaleio_openstack
-puppet module install --version "<0.5.0" cloudscaling-scaleio
+puppet module install cloudscaling-scaleio_openstack
+puppet module install cloudscaling-scaleio
 
 pushd /root
 rm -rf fuel-plugin-scaleio
