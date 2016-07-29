@@ -5,8 +5,13 @@ my_dir="$(dirname "$0")"
 juju-log "Fuel-master relation joined on ${JUJU_REMOTE_UNIT}"
 
 hostname=`hostname`
+secondary_address=''
+if [[ -n `ifconfig eth1` ]] ; then
+  secondary_address=`ifconfig eth1 | awk '/inet addr/{print $2}' | sed 's/addr://'`
+fi
 roles=`config-get roles`
 relation-set roles="$roles"
 relation-set hostname=$hostname
+relation-set secondary_address=$secondary_address
 
-juju-log "Hostname: $hostname, Roles: $roles"
+juju-log "Hostname: $hostname, Roles: $roles, Secondary address: $secondary_address"
