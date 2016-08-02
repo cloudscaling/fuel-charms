@@ -5,13 +5,14 @@ my_dir="$(dirname "$0")"
 juju-log "Fuel-master relation joined on ${JUJU_REMOTE_UNIT}"
 
 hostname=`hostname`
-secondary_address=''
-if [[ -n `ifconfig eth1` ]] ; then
-  secondary_address=`ifconfig eth1 | awk '/inet addr/{print $2}' | sed 's/addr://'`
-fi
 roles=`config-get roles`
+storage_iface=`config-get storage-iface`
+
+if [[ -n "$storage_iface" ]] ; then
+  storage_ip=`ifconfig "$storage_iface" | awk '/inet addr/{print $2}' | sed 's/addr://'`
+  relation-set storage_ip="$storage_ip"
+fi
 relation-set roles="$roles"
 relation-set hostname=$hostname
-relation-set secondary_address=$secondary_address
 
-juju-log "Hostname: $hostname, Roles: $roles, Secondary address: $secondary_address"
+juju-log "Hostname: $hostname, Roles: $roles, Storage address: $storage_ip"
