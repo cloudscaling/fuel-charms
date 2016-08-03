@@ -12,3 +12,8 @@ options:
     type: string
     default: "master"
     description: "Branch of fuel-plugin-scaleio"
+  storage-iface:
+    type: string
+    default: ""
+    description: "Interface to use for SDS-SDC communicaton."
+

@@ -28,6 +28,7 @@ rids=(`relation-ids fuel-master`)
 
 declare -A node_roles=()
 declare -A node_ips=()
+declare -A node_storage_ips=()
 declare -A node_names=()
 management_vip='127.0.0.1'
 
@@ -41,6 +42,7 @@ function retrieve-nodes-info {
         for unit in $units; do
             local roles=`relation-get -r $rid roles $unit`
             local ip=`relation-get -r $rid private-address $unit`
+            local storage_ip=`relation-get -r $rid storage_address $unit`
             local hostname=`relation-get -r $rid hostname $unit`
             if [ -z "$roles" ]; then exit; fi
             if [[ "$roles" =~ controller ]]; then
@@ -48,6 +50,11 @@ function retrieve-nodes-info {
             fi
             node_roles[$unit]="$roles"
             node_ips[$unit]="$ip"
+            if [[ -n $storage_ip ]] ; then
+              node_storage_ips[$unit]="$storage_ip"
+            else
+              node_storage_ips[$unit]="$ip"
+            fi
             node_names[$unit]="$hostname"
         done
     done
@@ -60,6 +67,7 @@ function prepare_node_yaml {
 
     juju-log "`declare -p node_roles`"
     juju-log "`declare -p node_ips`"
+    juju-log "`declare -p node_storage_ips`"
 
     storage_pools=`config-get storage-pools`
     device_paths=`config-get device-paths`
@@ -97,7 +105,7 @@ function prepare_node_yaml {
             echo "- uid: '${node}'"
             echo "  role: ${role}"
             echo "  internal_address: ${node_ips[$node]}"
-            echo "  storage_address: ${node_ips[$node]}"
+            echo "  storage_address: ${node_storage_ips[$node]}"
             echo "  name: ${name}"
         done
     done
