@@ -50,7 +50,11 @@ function retrieve-nodes-info {
             fi
             node_roles[$unit]="$roles"
             node_ips[$unit]="$ip"
-            node_storage_ips[$unit]="$storage_ip"
+            if [[ -n $storage_ip ]] ; then
+              node_storage_ips[$unit]="$storage_ip"
+            else
+              node_storage_ips[$unit]="$ip"
+            fi
             node_names[$unit]="$hostname"
         done
     done
@@ -101,11 +105,7 @@ function prepare_node_yaml {
             echo "- uid: '${node}'"
             echo "  role: ${role}"
             echo "  internal_address: ${node_ips[$node]}"
-            if [[ -n ${node_storage_ips[$node]} ]] ; then
-              echo "  storage_address: ${node_storage_ips[$node]}"
-            else
-              echo "  storage_address: ${node_ips[$node]}"
-            fi
+            echo "  storage_address: ${node_storage_ips[$node]}"
             echo "  name: ${name}"
         done
     done
