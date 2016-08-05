@@ -29,7 +29,7 @@ options:
         description: "Facters to set up before calling puppets"
     modules-path:
         type: string
-        default: "/etc/puppet/modules"
+        default: "/etc/puppet/modules:/root/fuel-plugin-scaleio/deployment_scripts/puppet/modules"
         description: "Path to puppet modules"
     manifests-path:
         type: string
