@@ -89,6 +89,9 @@ function prepare_node_yaml {
     gateway_ip=`config-get gateway-ip`
     gateway_port=`config-get gateway-port`
     gateway_user=`config-get gateway-user`
+    rmcache_usage=`config-get rmcache-usage`
+    rmcache_passthrough_pools=`config-get rmcache-passthrough-pools`
+    rmcache_cached_pools=`config-get rmcache-cached-pools`
 
     echo "---"
     echo "management_vip: $management_vip"
@@ -132,6 +135,9 @@ function prepare_node_yaml {
     echo "  rfcache_devices: $rfcache_devices"
     echo "  cached_storage_pools: $cached_storage_pools"
     echo "  protection_domain_nodes: $protection_domain_nodes"
+    echo "  rmcache_usage: $rmcache_usage"
+    echo "  rmcache_passthrough_pools: $rmcache_passthrough_pools"
+    echo "  rmcache_cached_pools: $rmcache_cached_pools"
     echo "  metadata:"
     echo "    plugin_id: 2"
     echo "    enabled: $metadata_enabled"

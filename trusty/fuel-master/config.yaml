@@ -99,3 +99,15 @@ options:
         type: string
         default: admin
         description: "User of gateway"
+    rmcache-usage:
+        type: boolean
+        default: false
+        description: "SDS Server RAM is reserved for caching storage devices in a Storage Pool."
+    rmcache-passthrough-pools:
+        type: string
+        default: ''
+        description: "List of Storage pools which should be cached in RAM in passthrough mode (writes to storage only)."
+    rmcache-cached-pools:
+        type: string
+        default: ''
+        description: "List of Storage pools which should be cached in RAM in cached mode (writes both to cache and to storage)."
