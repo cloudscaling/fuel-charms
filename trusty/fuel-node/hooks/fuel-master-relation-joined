@@ -12,7 +12,7 @@ if [[ -n "$storage_iface" ]] ; then
   storage_ip=`ifconfig "$storage_iface" | awk '/inet addr/{print $2}' | sed 's/addr://'`
 fi
 
-relation-set storage_ip="$storage_ip"
+relation-set storage_address="$storage_ip"
 relation-set roles="$roles"
 relation-set hostname=$hostname
 
