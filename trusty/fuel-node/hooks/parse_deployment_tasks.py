@@ -76,9 +76,9 @@ class TaskProcessor:
                 index = i + 1
         # process tasks which depend from this task
         for parent in task['required_for']:
-            if parent == 'post_deployment_end':
+            if parent in ['post_deployment_end', 'upload_cirros']:
                 continue
-            raise Exception("TODO: impl me") # TODO: impl if needed
+            raise Exception("TODO: impl me, task %s" % parent) # TODO: impl if needed
         self.__tasks.insert(index, name)
         self.__in_progress_tasks.remove(name)
 
