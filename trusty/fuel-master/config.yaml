@@ -111,3 +111,7 @@ options:
         type: string
         default: ''
         description: "List of Storage pools which should be cached in RAM in cached mode (writes both to cache and to storage)."
+    hyper-converged-deployment:
+        type: boolean
+        default: true
+        description: "Hyper-converged deployment"
