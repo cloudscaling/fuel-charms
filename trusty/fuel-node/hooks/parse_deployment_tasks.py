@@ -49,6 +49,9 @@ class TaskProcessor:
         self.__tasks.remove('scaleio-gateway-server')
     
     def __process_task(self, task):
+        type = task['type']
+        if type in ['group']:
+            return
         name = task['id']
         if name == 'scaleio-environment-check':
             return
