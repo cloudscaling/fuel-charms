@@ -119,7 +119,7 @@ function prepare_node_yaml {
     echo "  protection_domain: $protection_domain"
     echo "  gateway_user: $gateway_user"
     echo "  gateway_port: $gateway_port"
-    echo "  version: '2.0'"
+    echo "  pkg_ftp: ftp://QNzgdxXix:Aw3wFAwAq3@ftp.emc.com/RH/2.0.7536.0"
     echo "  gateway_ip: $gateway_ip"
     echo "  gateway_password: $password"
     echo "  existing_storage_pools: default"
